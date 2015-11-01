@@ -1,2 +1,2 @@
-#Implementation of hierarchical agglomerative clustering algorithm
+#Hierarchical agglomerative clustering
 [WIP]
