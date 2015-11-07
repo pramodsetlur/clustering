@@ -7,8 +7,7 @@ ALGORITHM
 __________
 There are various data structures in this algorithm:
     ```
-    test
-    ```
+    
     DIMENSIONS - an integer indicating the number of dimensions present for each point in the eucledien space
     POINTS_COUNT - an integer representing the number of points present in the input file
     input_point_list = [[1.0,2.3,4,2,1.3],[2.3,13.2,1.4,2.4],[]...] - a list containing all the input points
@@ -31,16 +30,19 @@ There are various data structures in this algorithm:
     ```
 
 SETUP:
+    
     read_input_list() : input_point_list
-
+   
     for every combination of points in the input_point_list
         Compute pairwise distance
         add [distance, [(point1), (point2)]] to the heap
 
     initiatialize_not_considered_list() : not_considered_list //This will now look like - [(point1), (point2), ..., (pointN)]
     cluster_iteration_number = POINTS_COUNT
-
+    
 HIERARCHICAL CLUSTERING
+    
+    
     while cluster_iteration_number >= 1:
         min_distance_cluster = heappop()
         cluster1 = min_distance_cluster[1][0]
@@ -55,7 +57,9 @@ HIERARCHICAL CLUSTERING
             cluster_iteration_number --
 
 PRECISION AND RECALL
+    ```
     Say for  k = 3
     Find all possible pairs in cluster1, cluster2 and cluster3.
     Compute all the possible pairs in the gold standard
     Compare the pairs produced by this algorithm vs the pairs of gold standard and compute the precision and recall
+    ```
