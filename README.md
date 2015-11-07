@@ -6,7 +6,6 @@ USAGE: pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]
 ALGORITHM
 __________
 There are various data structures in this algorithm:
-    ```
     
     DIMENSIONS - an integer indicating the number of dimensions present for each point in the eucledien space
     POINTS_COUNT - an integer representing the number of points present in the input file
@@ -27,8 +26,7 @@ There are various data structures in this algorithm:
                         Suppose there are 150 points.
                         Key is the number of clusters, value is the list of clusters.
                         value is a list - with all the clusters again represented as an individual list
-    ```
-
+    
 SETUP:
     
     read_input_list() : input_point_list
@@ -57,9 +55,9 @@ HIERARCHICAL CLUSTERING
             cluster_iteration_number --
 
 PRECISION AND RECALL
-    ```
+    
     Say for  k = 3
     Find all possible pairs in cluster1, cluster2 and cluster3.
     Compute all the possible pairs in the gold standard
     Compare the pairs produced by this algorithm vs the pairs of gold standard and compute the precision and recall
-    ```
+    
