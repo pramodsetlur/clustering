@@ -54,6 +54,7 @@ PRECISION AND RECALL
 '''
 import sys
 import math
+import heapq
 
 DIMENSIONS = 0
 POINTS_COUNT = 0
@@ -85,7 +86,21 @@ def read_input_file(input_file):
 
 
 def compute_centroid(cluster, input_point_list):
-    return 0
+    cluster_size = len(cluster)
+    cluster_euclidean_points = []
+    for i in range(0, cluster_size):
+        point = cluster[i]
+        euclean_points = input_point_list[point]
+        cluster_euclidean_points.append(euclean_points)
+
+    centroid = []
+    for i in range(0, DIMENSIONS):
+        for j in range(0, cluster_size):
+            centroid[i] += cluster_euclidean_points[i][j]
+        centroid[i] /= DIMENSIONS
+
+    return centroid
+
 
 def compute_eucledian_distance(clusterA, clusterB, input_point_list):
     sum = 0
@@ -107,15 +122,21 @@ def compute_eucledian_distance(clusterA, clusterB, input_point_list):
 
     return distance
 
-def compute_pair_distance_add_to_heap(i, list, input_point_list):
+def compute_pair_distance_add_to_heap(i, list, input_point_list, heap):
     j = i + 1
     clusterA = list[i]
     for k in range(j, POINTS_COUNT):
         clusterB = list[k]
         distance = compute_eucledian_distance(clusterA, clusterB, input_point_list)
-        print distance
+        #print distance
+        heap_item = [distance, [clusterA, clusterB]]
+        heapq.heappush(heap, heap_item)
 
-def setup(input_point_list):
+    return heap
+
+
+
+def setup(heap, input_point_list):
     #Create a list of [(0),(1),...,POINT_COUNT]
     point_count_list = []
     for i in range(POINTS_COUNT):
@@ -123,11 +144,14 @@ def setup(input_point_list):
 
     #Compute pairwise distance between points of all combination of 2
     for i in range(POINTS_COUNT - 1):
-        compute_pair_distance_add_to_heap(i, point_count_list, input_point_list)
+        heap = compute_pair_distance_add_to_heap(i, point_count_list, input_point_list, heap)
+
+    return heap
 
 
-def hierarchial_clustering(input_point_list):
-    setup(input_point_list)
+def hierarchial_clustering(heap, input_point_list):
+    heap = setup(heap, input_point_list)
+
 
 
 
@@ -141,5 +165,5 @@ if __name__ == '__main__':
         K_CLUSTERS = int(sys.argv[2])
         input_point_list = read_input_file(input_file)
         #print input_point_list
-
-        hierarchial_clustering(input_point_list)
+        heap = []
+        hierarchial_clustering(heap, input_point_list)
