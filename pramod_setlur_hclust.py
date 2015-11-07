@@ -132,7 +132,7 @@ def compute_eucledian_distance(clusterA, clusterB, input_point_list):
 def compute_pair_distance_add_to_heap(i, list, input_point_list, heap):
     j = i + 1
     clusterA = list[i]
-    for k in range(j, POINTS_COUNT):
+    for k in range(j, len(list)):
         clusterB = list[k]
         distance = compute_eucledian_distance(clusterA, clusterB, input_point_list)
         #print distance
@@ -168,7 +168,8 @@ def check_heap(heap):
         print i
 
 def copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict):
-    all_clusters_dict[cluster_iteration] = not_considered_list
+    all_clusters_dict[cluster_iteration] = list(not_considered_list)
+    print all_clusters_dict
     return all_clusters_dict
 
 def merge_clusters(clusterA, clusterB):
@@ -182,7 +183,7 @@ def hierarchial_clustering(heap, input_point_list):
     cluster_iteration = POINTS_COUNT
     all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
 
-    while cluster_iteration >= 1:
+    while cluster_iteration > 1:
         min_distance_cluster = heapq.heappop(heap)
         distance = min_distance_cluster[0]
         cluster_information = min_distance_cluster[1]
@@ -198,7 +199,7 @@ def hierarchial_clustering(heap, input_point_list):
             heap = compute_pair_distance_add_to_heap(0, not_considered_list, input_point_list, heap)
             cluster_iteration -= 1
             all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
-            print cluster_iteration
+
 
 if __name__ == '__main__':
 
