@@ -53,6 +53,7 @@ PRECISION AND RECALL
     Compare the pairs produced by this algorithm vs the pairs of gold standard and compute the precision and recall
 '''
 import sys
+import math
 
 DIMENSIONS = 0
 POINTS_COUNT = 0
@@ -64,7 +65,7 @@ def extract_eucledien_point(each_line):
     temp_line = [float(i) for i in temp_line]
     return temp_line
 
-def setup(input_file):
+def read_input_file(input_file):
     input_point_list = []
     with open(input_file) as file:
         for each_line in file:
@@ -82,6 +83,53 @@ def setup(input_file):
 
     return input_point_list
 
+
+def compute_centroid(cluster, input_point_list):
+    return 0
+
+def compute_eucledian_distance(clusterA, clusterB, input_point_list):
+    sum = 0
+    if 1 == len(clusterA):
+        centroidA = input_point_list[clusterA]
+    else:
+        centroidA = compute_centroid(clusterA, input_point_list)
+
+    if 1 == len(clusterB):
+        centroidB = input_point_list[clusterB]
+    else:
+        centroidB = compute_centroid(clusterB, input_point_list)
+
+    for i in range(DIMENSIONS):
+        xi = centroidA[i]
+        yi = centroidB[i]
+        sum += (xi - yi) * (xi - yi)
+    distance = math.sqrt(sum)
+
+    return distance
+
+def compute_pair_distance_add_to_heap(i, list, input_point_list):
+    j = i + 1
+    clusterA = list[i]
+    for j in list:
+        clusterB = j
+        distance = compute_eucledian_distance(clusterA, clusterB, input_point_list)
+        print distance
+
+def setup(input_point_list):
+    #Create a list of [0,1,...,POINT_COUNT]
+    point_count_list = range(0, POINTS_COUNT)
+
+
+    #Compute pairwise distance between points of all combination of 2
+    for i in range(DIMENSIONS - 1):
+        compute_pair_distance_add_to_heap(i, point_count_list, input_point_list)
+
+
+def hierarchial_clustering(input_point_list):
+    setup(input_point_list)
+
+
+
 if __name__ == '__main__':
 
     if 3 != len(sys.argv):
@@ -90,6 +138,8 @@ if __name__ == '__main__':
         input_file = sys.argv[1]
 
         K_CLUSTERS = int(sys.argv[2])
-        input_point_list = setup(input_file)
+        input_point_list = read_input_file(input_file)
         #print input_point_list
+
+        hierarchial_clustering(input_point_list)
 
