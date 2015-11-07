@@ -3,6 +3,13 @@
 ####  USAGE: pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]
 ####  Eg: pramod_setlur_hclust.py iris.dat 3
 
+##EXPLANATION
+Hierarchial clustering begins with considering each point as it's own cluster. Then recursively the two closeet clusters are merged together,
+forming the parent in the dendogram. 
+
+In this assignment, each point is a point in the eucledian space denoted by a set of N dimensions. 
+
+
 ##ALGORITHM
 
 There are various data structures in this algorithm:
