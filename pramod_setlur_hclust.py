@@ -130,30 +130,39 @@ def compute_pair_distance_add_to_heap(i, list, input_point_list, heap):
         distance = compute_eucledian_distance(clusterA, clusterB, input_point_list)
         #print distance
         heap_item = [distance, [clusterA, clusterB]]
+        #print heap_item
         heapq.heappush(heap, heap_item)
 
     return heap
 
 
+def initialize_not_considered_list(not_considered_list):
+    #Create a list of [(0),(1),...,POINT_COUNT]
+    for i in range(POINTS_COUNT):
+        not_considered_list.append([i])
+
+    return not_considered_list
 
 def setup(heap, input_point_list):
-    #Create a list of [(0),(1),...,POINT_COUNT]
-    point_count_list = []
-    for i in range(POINTS_COUNT):
-        point_count_list.append([i])
+    not_considered_list = []
+    not_considered_list = initialize_not_considered_list(not_considered_list)
 
     #Compute pairwise distance between points of all combination of 2
     for i in range(POINTS_COUNT - 1):
-        heap = compute_pair_distance_add_to_heap(i, point_count_list, input_point_list, heap)
+        heap = compute_pair_distance_add_to_heap(i, not_considered_list, input_point_list, heap)
 
-    return heap
+    return not_considered_list, heap
 
+def check_heap(heap):
+    sort = []
+    while heap:
+        sort.append(heapq.heappop(heap))
+    for i in sort:
+        print i
 
 def hierarchial_clustering(heap, input_point_list):
-    heap = setup(heap, input_point_list)
-
-
-
+    not_considered_list, heap = setup(heap, input_point_list)
+    #check_heap(heap)
 
 if __name__ == '__main__':
 
