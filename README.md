@@ -1,10 +1,10 @@
 #Hierarchical agglomerative clustering
 [WIP]
-USAGE: pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]
-   Eg: pramod_setlur_hclust.py iris.dat 3
+####  USAGE: pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]
+####  Eg: pramod_setlur_hclust.py iris.dat 3
 
-ALGORITHM
-__________
+##ALGORITHM
+
 There are various data structures in this algorithm:
     
     DIMENSIONS - an integer indicating the number of dimensions present for each point in the eucledien space
