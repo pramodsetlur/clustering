@@ -6,7 +6,7 @@ USAGE: pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]
 ALGORITHM
 __________
 There are various data structures in this algorithm:
-    `
+    ```
     DIMENSIONS - an integer indicating the number of dimensions present for each point in the eucledien space
     POINTS_COUNT - an integer representing the number of points present in the input file
     input_point_list = [[1.0,2.3,4,2,1.3],[2.3,13.2,1.4,2.4],[]...] - a list containing all the input points
@@ -26,7 +26,7 @@ There are various data structures in this algorithm:
                         Suppose there are 150 points.
                         Key is the number of clusters, value is the list of clusters.
                         value is a list - with all the clusters again represented as an individual list
-    `
+    ```
 
 SETUP:
     read_input_list() : input_point_list
