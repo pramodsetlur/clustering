@@ -220,6 +220,18 @@ def setup_gold_standard(input_file):
     file.close()
     return gold_standard_dict
 
+def compute_precision_recall(my_algo_pairs, gold_standard_pairs):
+    intersection = set(my_algo_pairs).intersection(gold_standard_pairs)
+
+    my_algo_count = float(len(my_algo_pairs))
+    gold_standard_count = float(len(gold_standard_pairs))
+    intersection_count = float(len(intersection))
+
+    precision = intersection_count / my_algo_count
+    recall = intersection_count / gold_standard_count
+
+    return precision, recall
+
 def find_pairs(pairs_list, points_list):
     temp_list = list(itertools.combinations(points_list, 2))
     pairs_list = pairs_list + temp_list
@@ -230,9 +242,6 @@ def gold_standard(input_file, k_clusters_list):
     gold_standard_pairs = []
     my_algo_pairs = []
 
-    precision = 0
-    recall = 0
-
     #Gold Standard pairs
     for cluster_name, points in gold_standard_dict.iteritems():
         gold_standard_pairs = find_pairs(gold_standard_pairs, points)
@@ -241,7 +250,16 @@ def gold_standard(input_file, k_clusters_list):
     for single_cluster in k_clusters_list:
         my_algo_pairs = find_pairs(my_algo_pairs, single_cluster)
 
+    precision, recall = compute_precision_recall(my_algo_pairs, gold_standard_pairs)
     return precision, recall
+
+
+def print_output(precision, recall, k_clusters):
+    print precision
+    print recall
+
+    for each_cluster in k_clusters:
+        print each_cluster
 
 if __name__ == '__main__':
 
@@ -256,3 +274,4 @@ if __name__ == '__main__':
         heap = []
         all_clusters_dict = hierarchial_clustering(heap, input_point_list)
         precision, recall = gold_standard(input_file, all_clusters_dict[K_CLUSTERS])
+        print_output(precision, recall, all_clusters_dict[K_CLUSTERS])
