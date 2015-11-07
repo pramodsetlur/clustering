@@ -52,5 +52,44 @@ PRECISION AND RECALL
     Compute all the possible pairs in the gold standard
     Compare the pairs produced by this algorithm vs the pairs of gold standard and compute the precision and recall
 '''
+import sys
 
+DIMENSIONS = 0
+POINTS_COUNT = 0
+K_CLUSTERS = 0
+
+def extract_eucledien_point(each_line):
+    temp_line = each_line.strip().split(',')
+    del temp_line[-1]
+    temp_line = [float(i) for i in temp_line]
+    return temp_line
+
+def setup(input_file):
+    input_point_list = []
+    with open(input_file) as file:
+        for each_line in file:
+            eucledian_point = extract_eucledien_point(each_line)
+            input_point_list.append(eucledian_point)
+    file.close()
+    global DIMENSIONS
+    DIMENSIONS = len(input_point_list[1])
+
+    global POINTS_COUNT
+    POINTS_COUNT = len(input_point_list)
+
+    #print DIMENSIONS
+    #print POINTS_COUNT
+
+    return input_point_list
+
+if __name__ == '__main__':
+
+    if 3 != len(sys.argv):
+        print "USAGE: python pramod_setlur_hclust.py [INPUT_FILE] [K_CLUSTERS]"
+    else:
+        input_file = sys.argv[1]
+
+        K_CLUSTERS = int(sys.argv[2])
+        input_point_list = setup(input_file)
+        #print input_point_list
 
