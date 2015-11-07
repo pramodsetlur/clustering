@@ -169,7 +169,7 @@ def check_heap(heap):
 
 def copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict):
     all_clusters_dict[cluster_iteration] = list(not_considered_list)
-    print all_clusters_dict
+    #print cluster_iteration,": ", all_clusters_dict[cluster_iteration], "\n"
     return all_clusters_dict
 
 def merge_clusters(clusterA, clusterB):
@@ -201,6 +201,8 @@ def hierarchial_clustering(heap, input_point_list):
             all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
 
 
+    return all_clusters_dict
+
 if __name__ == '__main__':
 
     if 3 != len(sys.argv):
@@ -212,4 +214,5 @@ if __name__ == '__main__':
         input_point_list = read_input_file(input_file)
         #print input_point_list
         heap = []
-        hierarchial_clustering(heap, input_point_list)
+        all_clusters_dict = hierarchial_clustering(heap, input_point_list)
+        
