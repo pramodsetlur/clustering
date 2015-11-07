@@ -88,16 +88,20 @@ def read_input_file(input_file):
 def compute_centroid(cluster, input_point_list):
     cluster_size = len(cluster)
     cluster_euclidean_points = []
+    centroid = []
+
+    for i in range(0, DIMENSIONS):
+        centroid.append(0.0)
+
     for i in range(0, cluster_size):
         point = cluster[i]
         euclean_points = input_point_list[point]
         cluster_euclidean_points.append(euclean_points)
 
-    centroid = []
     for i in range(0, DIMENSIONS):
         for j in range(0, cluster_size):
-            centroid[i] += cluster_euclidean_points[i][j]
-        centroid[i] /= DIMENSIONS
+            centroid[i] += cluster_euclidean_points[j][i]
+        centroid[i] /= cluster_size
 
     return centroid
 
@@ -178,20 +182,23 @@ def hierarchial_clustering(heap, input_point_list):
     cluster_iteration = POINTS_COUNT
     all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
 
-    min_distance_cluster = heapq.heappop(heap)
-    distance = min_distance_cluster[0]
-    cluster_information = min_distance_cluster[1]
-    clusterA = cluster_information[0]
-    clusterB = cluster_information[1]
+    while cluster_iteration >= 1:
+        min_distance_cluster = heapq.heappop(heap)
+        distance = min_distance_cluster[0]
+        cluster_information = min_distance_cluster[1]
+        clusterA = cluster_information[0]
+        clusterB = cluster_information[1]
 
-    if clusterA in not_considered_list and clusterB in not_considered_list:
-        not_considered_list.remove(clusterA)
-        not_considered_list.remove(clusterB)
-        merged_cluster = merge_clusters(clusterA, clusterB)
-        not_considered_list.insert(0, merged_cluster)
+        if clusterA in not_considered_list and clusterB in not_considered_list:
+            not_considered_list.remove(clusterA)
+            not_considered_list.remove(clusterB)
+            merged_cluster = merge_clusters(clusterA, clusterB)
+            not_considered_list.insert(0, merged_cluster)
 
-        cluster_iteration -= 1
-        all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
+            heap = compute_pair_distance_add_to_heap(0, not_considered_list, input_point_list, heap)
+            cluster_iteration -= 1
+            all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
+            print cluster_iteration
 
 if __name__ == '__main__':
 
