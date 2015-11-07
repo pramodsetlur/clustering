@@ -90,12 +90,12 @@ def compute_centroid(cluster, input_point_list):
 def compute_eucledian_distance(clusterA, clusterB, input_point_list):
     sum = 0
     if 1 == len(clusterA):
-        centroidA = input_point_list[clusterA]
+        centroidA = input_point_list[clusterA[0]]
     else:
         centroidA = compute_centroid(clusterA, input_point_list)
 
     if 1 == len(clusterB):
-        centroidB = input_point_list[clusterB]
+        centroidB = input_point_list[clusterB[0]]
     else:
         centroidB = compute_centroid(clusterB, input_point_list)
 
@@ -110,18 +110,19 @@ def compute_eucledian_distance(clusterA, clusterB, input_point_list):
 def compute_pair_distance_add_to_heap(i, list, input_point_list):
     j = i + 1
     clusterA = list[i]
-    for j in list:
-        clusterB = j
+    for k in range(j, POINTS_COUNT):
+        clusterB = list[k]
         distance = compute_eucledian_distance(clusterA, clusterB, input_point_list)
         print distance
 
 def setup(input_point_list):
-    #Create a list of [0,1,...,POINT_COUNT]
-    point_count_list = range(0, POINTS_COUNT)
-
+    #Create a list of [(0),(1),...,POINT_COUNT]
+    point_count_list = []
+    for i in range(POINTS_COUNT):
+        point_count_list.append([i])
 
     #Compute pairwise distance between points of all combination of 2
-    for i in range(DIMENSIONS - 1):
+    for i in range(POINTS_COUNT - 1):
         compute_pair_distance_add_to_heap(i, point_count_list, input_point_list)
 
 
@@ -142,4 +143,3 @@ if __name__ == '__main__':
         #print input_point_list
 
         hierarchial_clustering(input_point_list)
-
