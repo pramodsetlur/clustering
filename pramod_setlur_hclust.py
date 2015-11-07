@@ -114,6 +114,9 @@ def compute_eucledian_distance(clusterA, clusterB, input_point_list):
     else:
         centroidB = compute_centroid(clusterB, input_point_list)
 
+    #print "ClusterA:",clusterA, "CentroidA: ",centroidA
+    #print "ClusterB:",clusterB, "CentroidB: ",centroidB, "\n"
+
     for i in range(DIMENSIONS):
         xi = centroidA[i]
         yi = centroidB[i]
@@ -160,9 +163,35 @@ def check_heap(heap):
     for i in sort:
         print i
 
+def copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict):
+    all_clusters_dict[cluster_iteration] = not_considered_list
+    return all_clusters_dict
+
+def merge_clusters(clusterA, clusterB):
+    return list(set(clusterA) | set(clusterB))
+
 def hierarchial_clustering(heap, input_point_list):
+    all_clusters_dict = {}
     not_considered_list, heap = setup(heap, input_point_list)
     #check_heap(heap)
+
+    cluster_iteration = POINTS_COUNT
+    all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
+
+    min_distance_cluster = heapq.heappop(heap)
+    distance = min_distance_cluster[0]
+    cluster_information = min_distance_cluster[1]
+    clusterA = cluster_information[0]
+    clusterB = cluster_information[1]
+
+    if clusterA in not_considered_list and clusterB in not_considered_list:
+        not_considered_list.remove(clusterA)
+        not_considered_list.remove(clusterB)
+        merged_cluster = merge_clusters(clusterA, clusterB)
+        not_considered_list.insert(0, merged_cluster)
+
+        cluster_iteration -= 1
+        all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
 
 if __name__ == '__main__':
 
