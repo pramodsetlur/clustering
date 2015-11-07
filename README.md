@@ -7,6 +7,8 @@ ALGORITHM
 __________
 There are various data structures in this algorithm:
     ```
+    test
+    ```
     DIMENSIONS - an integer indicating the number of dimensions present for each point in the eucledien space
     POINTS_COUNT - an integer representing the number of points present in the input file
     input_point_list = [[1.0,2.3,4,2,1.3],[2.3,13.2,1.4,2.4],[]...] - a list containing all the input points
