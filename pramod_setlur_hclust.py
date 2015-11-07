@@ -55,6 +55,7 @@ PRECISION AND RECALL
 import sys
 import math
 import heapq
+import itertools
 
 DIMENSIONS = 0
 POINTS_COUNT = 0
@@ -173,7 +174,7 @@ def copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_d
     return all_clusters_dict
 
 def merge_clusters(clusterA, clusterB):
-    return list(set(clusterA) | set(clusterB))
+    return sorted(list(set(clusterA) | set(clusterB)))
 
 def hierarchial_clustering(heap, input_point_list):
     all_clusters_dict = {}
@@ -200,8 +201,47 @@ def hierarchial_clustering(heap, input_point_list):
             cluster_iteration -= 1
             all_clusters_dict = copy_ncl_all_clusters(cluster_iteration, not_considered_list, all_clusters_dict)
 
-
     return all_clusters_dict
+
+def setup_gold_standard(input_file):
+    gold_standard_dict = {}
+    with open(input_file) as file:
+        point_number = 0
+        for each_line in file:
+            temp_line = each_line.strip().split(',')
+            cluster_name = temp_line[-1]
+
+            gold_standard_dict.setdefault(cluster_name, [])
+            point_list = gold_standard_dict[cluster_name]
+            point_list.append(point_number)
+            gold_standard_dict[cluster_name] = point_list
+
+            point_number += 1
+    file.close()
+    return gold_standard_dict
+
+def find_pairs(pairs_list, points_list):
+    temp_list = list(itertools.combinations(points_list, 2))
+    pairs_list = pairs_list + temp_list
+    return pairs_list
+
+def gold_standard(input_file, k_clusters_list):
+    gold_standard_dict = setup_gold_standard(input_file)
+    gold_standard_pairs = []
+    my_algo_pairs = []
+
+    precision = 0
+    recall = 0
+
+    #Gold Standard pairs
+    for cluster_name, points in gold_standard_dict.iteritems():
+        gold_standard_pairs = find_pairs(gold_standard_pairs, points)
+
+    #My algo pairs
+    for single_cluster in k_clusters_list:
+        my_algo_pairs = find_pairs(my_algo_pairs, single_cluster)
+
+    return precision, recall
 
 if __name__ == '__main__':
 
@@ -215,4 +255,4 @@ if __name__ == '__main__':
         #print input_point_list
         heap = []
         all_clusters_dict = hierarchial_clustering(heap, input_point_list)
-        
+        precision, recall = gold_standard(input_file, all_clusters_dict[K_CLUSTERS])
